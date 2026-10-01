@@ -18,6 +18,7 @@ struct ProdNameSorter {
     }
 };
 void displayProducts(vector<Product*>& hits);
+void displayUnsortedProducts(vector<Product*>& hits);
 
 int main(int argc, char* argv[])
 {
