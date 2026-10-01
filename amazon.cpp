@@ -122,7 +122,7 @@ int main(int argc, char* argv[])
                     User* u = ds.lookupUser(username);
                     if (u != nullptr) {
                         hits = ds.viewCart(u);
-                        displayProducts(hits);
+                        displayUnsortedProducts(hits);
                     } else {
                         cout << "Invalid username" << endl;
                     }
@@ -161,6 +161,22 @@ void displayProducts(vector<Product*>& hits)
     	return;
     }
     std::sort(hits.begin(), hits.end(), ProdNameSorter());
+    for(vector<Product*>::iterator it = hits.begin(); it != hits.end(); ++it) {
+        cout << "Hit " << setw(3) << resultNo << endl;
+        cout << (*it)->displayString() << endl;
+        cout << endl;
+        resultNo++;
+    }
+}
+
+void displayUnsortedProducts(vector<Product*>& hits)
+{
+    int resultNo = 1;
+    if (hits.begin() == hits.end()) {
+        cout << "No results found!" << endl;
+        return;
+    }
+
     for(vector<Product*>::iterator it = hits.begin(); it != hits.end(); ++it) {
         cout << "Hit " << setw(3) << resultNo << endl;
         cout << (*it)->displayString() << endl;
