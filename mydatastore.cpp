@@ -24,7 +24,8 @@ MyDataStore::~MyDataStore() {
 void MyDataStore::addProduct(Product* p) {
     if (products_.find(p) == products_.end()) {
         products_.insert(p);
-        for (std::set<std::string>::iterator it = p->keywords().begin(); it != p->keywords().end(); ++it) {
+        std::set<std::string> keywords = p->keywords();
+        for (std::set<std::string>::iterator it = keywords.begin(); it != keywords.end(); ++it) {
             keyMap_[*it].insert(p);
         }
     }
@@ -80,7 +81,7 @@ void MyDataStore::dump(std::ostream& ofile) {
     for (Product* p : products_) {
         p->dump(ofile); 
     }
-    ofile << "<products>" << "\n";
+    ofile << "</products>" << "\n";
 
     ofile << "<users>" << "\n";
     for (User* u : users_) {
