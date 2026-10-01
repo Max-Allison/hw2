@@ -9,6 +9,7 @@
 #include "db_parser.h"
 #include "product_parser.h"
 #include "util.h"
+#include "mydatastore.h"
 
 using namespace std;
 struct ProdNameSorter {
@@ -29,7 +30,7 @@ int main(int argc, char* argv[])
      * Declare your derived DataStore object here replacing
      *  DataStore type to your derived type
      ****************/
-    DataStore ds;
+    MyDataStore ds;
 
 
 
@@ -100,6 +101,45 @@ int main(int argc, char* argv[])
                 done = true;
             }
 	    /* Add support for other commands here */
+            else if (cmd == "ADD") {
+                string username;
+                size_t hitIndex;
+                if (ss >> username >> hitIndex) {
+                    User* u = ds.lookupUser(username);
+                    if ( u != nullptr) {
+                        if (!ds.addToCart(u, hitIndex)) {
+                            cout << "Invalid request" << endl;
+                        }
+                    } else {
+                        cout << "Invalid request" << endl;
+                    }
+                }
+            }
+
+            else if (cmd == "VIEWCART") {
+                string username;
+                if (ss >> username) {
+                    User* u = ds.lookupUser(username);
+                    if (u != nullptr) {
+                        hits = ds.viewCart(u);
+                        displayProducts(hits);
+                    } else {
+                        cout << "Invalid username" << endl;
+                    }
+                }
+            }
+
+            else if (cmd == "BUYCART") {
+                string username;
+                if (ss >> username) {
+                    User* u = ds.lookupUser(username);
+                    if (u != nullptr) {
+                        ds.buyCart(u);
+                    } else {
+                        cout << "Invalid username" << endl;
+                    }
+                }
+            }
 
 
 
